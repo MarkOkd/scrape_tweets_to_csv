@@ -122,7 +122,7 @@ def get_arguments():
                          help='search for tweets until this date')
     parser.add_argument('--lang', type=str, default=None,
                          help='search for tweets in this language')
-    parser.add_argument('--interval', '-t', type=int, default=1,
+    parser.add_argument('--interval', '-t', type=float, default=1,
                          help='wait for this interval before scraping next tweet. unit : second')
     return parser.parse_args()
 
