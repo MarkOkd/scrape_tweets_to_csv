@@ -85,7 +85,7 @@ def make_search_query(keyword, username=None, since=None, until=None, lang=None)
         query = f'from:{username}'
     else:
         return
-    #add dates to query:
+    #add dates to query
     if not since and not until:
         pass
     elif since and not until:
