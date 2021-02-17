@@ -12,7 +12,7 @@ def scrape_tweets_by_keyword(keyword, output_dir=None, num_tweets=10000,
     #make query
     search_query = make_search_query(keyword, username, since, until, lang)
     if not search_query:
-        print('at least one of keyword or username must be given')
+        print('at least one of keyword and username must be given')
         return
     #start scraping tweets
     tweets_list = []
@@ -131,7 +131,7 @@ if __name__ == '__main__':
     keyword = args.keyword
     username = args.username
     if not keyword and not username:
-        print('at least one of keyword or username must be given')
+        print('at least one of keyword and username must be given')
     elif not keyword and username:
         print('scraping tweets')
         scrape_tweets_by_username(username=username, 
