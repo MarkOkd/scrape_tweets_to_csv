@@ -36,6 +36,7 @@ def scrape_tweets_by_keyword(keyword, output_dir=None, num_tweets=10000,
     tweets_df = pd.DataFrame(tweets_list, columns=['Date', 'Username', 'Tweet'])
     if not output_dir:
         output_dir = os.getcwd()
+    #change colon : (U+003A) to modifier letter Colon ꞉ (U+A789)
     output_query = f'tweets_about_{search_query}.csv'.replace(':', chr(0xA789))
     output_path = os.path.join(output_dir, output_query)
     print(len(tweets_df), 'tweets obtained')
@@ -72,6 +73,7 @@ def scrape_tweets_by_username(username, output_dir=None, num_tweets=10000,
     tweets_df = pd.DataFrame(tweets_list, columns=['Date', 'Username', 'Tweet'])
     if not output_dir:
         output_dir = os.getcwd()
+    #change colon : (U+003A) to modifier letter Colon ꞉ (U+A789)
     output_query = f'tweets_about_{search_query}.csv'.replace(':', chr(0xA789))
     output_path = os.path.join(output_dir, output_query)
     print(len(tweets_df), 'tweets obtained')
