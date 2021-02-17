@@ -7,10 +7,10 @@ import snscrape.modules.twitter as sntwitter
 
 def scrape_tweets_by_keyword(keyword, output_dir=None, num_tweets=10000,
                              username=None, exclude_replies=False, 
-                             since=None, until=None, lang=None,
+                             to_user=None, since=None, until=None, lang=None,
                              get_all=False, interval=1):
     #make query
-    search_query = make_search_query(keyword, username, since, until, lang)
+    search_query = make_search_query(keyword, username, to_user, since, until, lang)
     if not search_query:
         print('at least one of keyword and username must be given')
         return
@@ -36,16 +36,17 @@ def scrape_tweets_by_keyword(keyword, output_dir=None, num_tweets=10000,
     tweets_df = pd.DataFrame(tweets_list, columns=['Date', 'Username', 'Tweet'])
     if not output_dir:
         output_dir = os.getcwd()
-    output_path = f'{output_dir}/tweets_about_{search_query}.csv'
+    output_query = f'tweets_about_{search_query}.csv'.replace(':', chr(0xA789))
+    output_path = os.path.join(output_dir, output_query)
     print(len(tweets_df), 'tweets obtained')
     tweets_df.to_csv(output_path, index=False)
 
 def scrape_tweets_by_username(username, output_dir=None, num_tweets=10000,
-                              exclude_replies=False, since=None, until=None,
+                              exclude_replies=False, to_user=None, since=None, until=None, 
                               lang=None, get_all=False, interval=1):
     #make query
     keyword = None
-    search_query = make_search_query(keyword, username, since, until, lang)
+    search_query = make_search_query(keyword, username, to_user, since, until, lang)
     if not search_query:
         print('username must be given')
         return
@@ -71,11 +72,12 @@ def scrape_tweets_by_username(username, output_dir=None, num_tweets=10000,
     tweets_df = pd.DataFrame(tweets_list, columns=['Date', 'Username', 'Tweet'])
     if not output_dir:
         output_dir = os.getcwd()
-    output_path = f'{output_dir}/tweets_{search_query}.csv'
+    output_query = f'tweets_about_{search_query}.csv'.replace(':', chr(0xA789))
+    output_path = os.path.join(output_dir, output_query)
     print(len(tweets_df), 'tweets obtained')
     tweets_df.to_csv(output_path, index=False)
 
-def make_search_query(keyword, username=None, since=None, until=None, lang=None):
+def make_search_query(keyword, username=None, to_user=None, since=None, until=None, lang=None):
     #add keyword and username to query
     if keyword and username:
         query = f'{keyword} from:{username}'
@@ -85,6 +87,11 @@ def make_search_query(keyword, username=None, since=None, until=None, lang=None)
         query = f'from:{username}'
     else:
         return
+    #only replies to a specific user
+    if to_user:
+        query = f'{query} to:{to_user}'
+    else:
+        pass
     #add dates to query
     if not since and not until:
         pass
@@ -116,6 +123,8 @@ def get_arguments():
                          help='whether or not get as many tweets as possible')
     parser.add_argument('--exclude_replies', '-ex_rep', action='store_true',
                          help='whether or not exclude replies')
+    parser.add_argument('--to_user', type=str, default=None,
+                         help='get only replies to this user')
     parser.add_argument('--since', type=str, default=None,
                          help='search for tweets since this date')
     parser.add_argument('--until', type=str, default=None,
@@ -138,6 +147,7 @@ if __name__ == '__main__':
                                   output_dir=args.output_dir,
                                   num_tweets=args.num_tweets, 
                                   exclude_replies=args.exclude_replies,
+                                  to_user=args.to_user,
                                   since=args.since, 
                                   until=args.until, 
                                   lang=args.lang,
@@ -150,6 +160,7 @@ if __name__ == '__main__':
                                  num_tweets=args.num_tweets,
                                  username=username,
                                  exclude_replies=args.exclude_replies,
+                                 to_user=args.to_user,
                                  since=args.since,
                                  until=args.until,
                                  lang=args.lang,
