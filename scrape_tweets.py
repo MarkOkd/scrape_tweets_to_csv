@@ -74,7 +74,7 @@ def scrape_tweets_by_username(username, output_dir=None, num_tweets=10000,
     if not output_dir:
         output_dir = os.getcwd()
     #change colon : (U+003A) to modifier letter colon ꞉ (U+A789)
-    output_query = f'tweets_about_{search_query}.csv'.replace(':', chr(0xA789))
+    output_query = f'tweets_{search_query}.csv'.replace(':', chr(0xA789))
     output_path = os.path.join(output_dir, output_query)
     print(len(tweets_df), 'tweets obtained')
     tweets_df.to_csv(output_path, index=False)
