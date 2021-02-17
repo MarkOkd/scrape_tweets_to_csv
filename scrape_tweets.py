@@ -32,14 +32,15 @@ def scrape_tweets_by_keyword(keyword, output_dir=None, num_tweets=10000,
             num_scraped += 1
             pbar.update(1)
             time.sleep(interval)
-    #save scraped tweets as a csv file
     tweets_df = pd.DataFrame(tweets_list, columns=['Date', 'Username', 'Tweet'])
+    #total number of obtained tweets
+    print(len(tweets_df), 'tweets obtained')
     if not output_dir:
         output_dir = os.getcwd()
     #change colon : (U+003A) to modifier letter colon ꞉ (U+A789)
     output_query = f'tweets_about_{search_query}.csv'.replace(':', chr(0xA789))
     output_path = os.path.join(output_dir, output_query)
-    print(len(tweets_df), 'tweets obtained')
+    #save scraped tweets as a csv file
     tweets_df.to_csv(output_path, index=False)
 
 def scrape_tweets_by_username(username, output_dir=None, num_tweets=10000,
@@ -69,14 +70,15 @@ def scrape_tweets_by_username(username, output_dir=None, num_tweets=10000,
             num_scraped += 1
             pbar.update(1)
             time.sleep(interval)
-    #save scraped tweets as a csv file
     tweets_df = pd.DataFrame(tweets_list, columns=['Date', 'Username', 'Tweet'])
+    #total number of obtained tweets
+    print(len(tweets_df), 'tweets obtained')
     if not output_dir:
         output_dir = os.getcwd()
     #change colon : (U+003A) to modifier letter colon ꞉ (U+A789)
     output_query = f'tweets_{search_query}.csv'.replace(':', chr(0xA789))
     output_path = os.path.join(output_dir, output_query)
-    print(len(tweets_df), 'tweets obtained')
+    #save scraped tweets as a csv file
     tweets_df.to_csv(output_path, index=False)
 
 def make_search_query(keyword, username=None, to_user=None, since=None, until=None, lang=None):
